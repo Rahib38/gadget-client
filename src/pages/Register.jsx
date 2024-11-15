@@ -1,5 +1,7 @@
+import axios from "axios";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import GoggleLogin from "../Components/Login-registration/GoggleLogin";
 import UseAuth from "../Hooks/UseAuth";
 
@@ -13,10 +15,28 @@ const Register = () => {
   } = useForm();
   const navigate = useNavigate();
   const onSubmit = (data) => {
-    const data1 = data.email;
-    const data2 = data.password;
-    CreateUser(data1, data2); // console.log(data.email,data.password);
-    navigate("/");
+    const email = data.email;
+    const role = data.role;
+    const status = role === "buyer" ? "approver" : "pending";
+
+    const wishList = [];
+    const userData = { email, role, status, wishList };
+    CreateUser(data.email, data.password).then(() => {
+      axios.post("http://localhost:4001/users", userData).then((res) => {
+        console.log(res);
+        if (res.data.insertedId) {
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Registration success fully",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          navigate("/");
+        }
+      });
+    }); // console.log(data.email,data.password);
+    // console.log(userData);
   };
   return (
     <div>
@@ -135,4 +155,3 @@ const Register = () => {
 };
 
 export default Register;
-
