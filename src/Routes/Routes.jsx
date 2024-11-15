@@ -8,6 +8,7 @@ import Login from "../pages/Login";
 import Products from "../pages/Products";
 import Register from "../pages/Register";
 import PrivateRoute from "./PrivateRoute";
+import Overview from "../Dashboard/Overview";
 
 export const router = createBrowserRouter([
 
@@ -46,7 +47,8 @@ export const router = createBrowserRouter([
       element:<PrivateRoute><DashboardLayout></DashboardLayout></PrivateRoute>,
       children:[
         {
-        
+        path:"/dashboard/overview",
+        element:<Overview></Overview>
         }
       ]
     }

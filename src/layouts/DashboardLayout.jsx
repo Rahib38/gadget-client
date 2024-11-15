@@ -7,7 +7,7 @@ const DashboardLayout = () => {
       <div className="col-span-2">
         <Slider></Slider>
       </div>
-      <div className="col-span-10">
+      <div className="col-span-10 p-24">
         <Outlet></Outlet>
       </div>
     </div>
