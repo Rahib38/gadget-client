@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import UseAuth from "../../Hooks/UseAuth";
 
 const UserDropDown = () => {
@@ -21,7 +21,7 @@ const UserDropDown = () => {
           className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
         >
           <li>
-           <Link>DashBoard</Link>
+           <NavLink to='/dashboard'>Dashboard</NavLink>
           </li>
           <li>
          <button onClick={handleLogout} className="btn btn-primary btn-outline btn-sm">Log out</button>
