@@ -47,7 +47,7 @@ function Slider() {
        <li key={route.id} className="p-2 border border-black rounded-md">
        <NavLink
          className="flex justify-center items-center gap-2"
-         to="/dashboard/overview"
+         to={route.route}
        >
         <>{route.icon}</>
 
