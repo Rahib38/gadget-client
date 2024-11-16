@@ -1,6 +1,10 @@
+import axios from "axios";
 import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
+import UseAuth from "../../Hooks/UseAuth";
 
 function AddProduct() {
+  const { user } = UseAuth();
   const {
     register,
     handleSubmit,
@@ -9,7 +13,42 @@ function AddProduct() {
   } = useForm();
   //   const navigate = useNavigate();
   const onSubmit = (data) => {
-    console.log(data);
+    const title = data.title;
+    const brand = data.brand;
+    const price = parseFloat(data.price);
+    const stock = parseFloat(data.stock);
+    const imageURL = data.imageURL;
+    const category = data.category;
+    const description = data.description;
+    const sellerProduct = user.email;
+    const product = {
+      title,
+      brand,
+      price,
+      stock,
+      imageURL,
+      category,
+      description,
+      sellerProduct,
+    };
+    const token = localStorage.getItem("access-token");
+    axios.post("http://localhost:4001/add-products", product, {
+        headers: {
+          authorization: ` Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        if (res.data.insertedId) {
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "product add success fully",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            
+          }
+      });
   };
   return (
     <div>
@@ -92,7 +131,7 @@ function AddProduct() {
               <span className="label-text">Category</span>
             </label>
             <input
-              type="number"
+              type="text"
               name="category"
               placeholder="Product category "
               className="input input-bordered border-black"
@@ -105,6 +144,23 @@ function AddProduct() {
             )}
           </div>
         </div>
+        <div className="form-control w-full">
+            <label className="label">
+              <span className="label-text">Product Image</span>
+            </label>
+            <input
+              type="text"
+              name="imageURL"
+              placeholder="Product imageURL "
+              className="input input-bordered border-black"
+              {...register("imageURL", { required: true })}
+            />
+            {errors.imageURL && (
+              <p className="text-red-500 text-sm font-light">
+                Product Image is required
+              </p>
+            )}
+          </div>
         <div className="form-control w-full">
           <label className="label">
             <span className="label-text">Description</span>
