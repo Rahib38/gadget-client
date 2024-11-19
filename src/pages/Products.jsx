@@ -13,19 +13,27 @@ const Products = () => {
   const [sort, setSort] = useState("asc");
   const [brand, setBrand] = useState("");
   const [category, setCategory] = useState("");
+  const [uniqueBrand, setUniqueBrand] = useState([]);
+  const [uniqueCategory, setUniqueCategory] = useState([]);
   // console.log(search);
-  console.log(brand,category);
+  // console.log(brand, category);
   useEffect(() => {
     setLoading(true);
     const fec = async () => {
-      axios.get(`http://localhost:4001/all-products`).then((res) => {
-        setProducts(res.data);
-        setLoading(false);
-        // console.log(res.data);
-      });
+      axios
+        .get(
+          `http://localhost:4001/all-products?title=${search}&sort=${sort}&brand=${brand}&category${category}`
+        )
+        .then((res) => {
+          setProducts(res.data.products);
+          setUniqueBrand(res.data.brands);
+          setUniqueCategory(res.data.categorys);
+          setLoading(false);
+          console.log(res.data.products);
+        });
     };
     fec();
-  }, []);
+  }, [brand, category, search, sort]);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -35,13 +43,13 @@ const Products = () => {
     // s=""
   };
 
-
-  const handleReset = ()=>{
-    setSearch("")
-    setSort("asc")
-    setBrand("")
-    setCategory("")
-  }
+  const handleReset = () => {
+    setSearch("");
+    setSort("asc");
+    setBrand("");
+    setCategory("");
+  
+  };
 
   return (
     <div className="container mx-auto">
@@ -56,7 +64,13 @@ const Products = () => {
       </div>
       <div className="grid grid-cols-12">
         <div className="col-span-2">
-          <FilterBar setBrand={setBrand} setCategory={setCategory} handleReset={handleReset}/>
+          <FilterBar
+            setBrand={setBrand}
+            setCategory={setCategory}
+            handleReset={handleReset}
+            uniqueBrand={uniqueBrand}
+            uniqueCategory={uniqueCategory}
+          />
         </div>
         <div className="col-span-10">
           {loading ? (
