@@ -1,12 +1,14 @@
 import { MdOutlineSearchOff } from "react-icons/md";
 
-function Searchbar() {
+function Searchbar({handleSearch}) {
   return (
     <div>
-      <form>
+      <form onSubmit={handleSearch}>
         <label className="input input-bordered flex items-center gap-2">
-          <input type="text" className="grow" placeholder="Search Products" />
-          <MdOutlineSearchOff />
+          <input type="text" 
+          name="search"
+          className="grow" placeholder="Search Products" />
+          <button><MdOutlineSearchOff /></button>
 
         </label>
       </form>

@@ -20,7 +20,7 @@ function AddProduct() {
     const imageURL = data.imageURL;
     const category = data.category;
     const description = data.description;
-    const sellerProduct = user.email;
+    const sellerEmail = user.email;
     const product = {
       title,
       brand,
@@ -29,7 +29,7 @@ function AddProduct() {
       imageURL,
       category,
       description,
-      sellerProduct,
+      sellerEmail,
     };
     const token = localStorage.getItem("access-token");
     axios.post("http://localhost:4001/add-products", product, {

@@ -1,14 +1,12 @@
-function SortBy() {
+function SortBy({setSort}) {
   return (
     <div>
-      <form>
-        <label className="flex items-center gap-2">
-          <select className="select select-bordered w-full ">
+   
+          <select className="select select-bordered w-full " onChange={(e)=>setSort(e.target.value)}>
             <option value="asc">Low to high</option>
             <option value="desc">High to low</option>
           </select>
-        </label>
-      </form>
+      
     </div>
   );
 }
