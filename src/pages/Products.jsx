@@ -1,5 +1,9 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import {
+  FaRegArrowAltCircleLeft,
+  FaRegArrowAltCircleRight,
+} from "react-icons/fa";
 import FilterBar from "../Components/FilterBar";
 import ProductCard from "../Components/ProductCard";
 import Searchbar from "../Components/Searchbar";
@@ -15,25 +19,28 @@ const Products = () => {
   const [category, setCategory] = useState("");
   const [uniqueBrand, setUniqueBrand] = useState([]);
   const [uniqueCategory, setUniqueCategory] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   // console.log(search);
-  // console.log(brand, category);
+  console.log(category);
   useEffect(() => {
     setLoading(true);
     const fec = async () => {
       axios
         .get(
-          `http://localhost:4001/all-products?title=${search}&sort=${sort}&brand=${brand}&category${category}`
+          `http://localhost:4001/all-products?title=${search}&page=${page}&limit=${9}&sort=${sort}&brand=${brand}&category=${category}`
         )
         .then((res) => {
           setProducts(res.data.products);
           setUniqueBrand(res.data.brands);
           setUniqueCategory(res.data.categorys);
           setLoading(false);
+          setTotalPages(Math.ceil(res.data.totalProducts/9))
           console.log(res.data.products);
         });
     };
     fec();
-  }, [brand, category, search, sort]);
+  }, [brand, category, search, sort,page]);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -48,7 +55,14 @@ const Products = () => {
     setSort("asc");
     setBrand("");
     setCategory("");
-  
+    window.location.reload();
+  };
+
+  const handlePageChange = (newPage) => {
+    if (newPage > 0 && newPage <= totalPages) {
+      setPage(newPage);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   };
 
   return (
@@ -91,6 +105,18 @@ const Products = () => {
             </>
           )}
         </div>
+      </div>
+      <div className="flex justify-center items-center gap-2 my-8">
+        <button onClick={()=>handlePageChange(page-1)}>
+          <FaRegArrowAltCircleLeft />
+        </button>
+        <p>
+          {" "}
+          page {page} of {totalPages}
+        </p>
+        <button onClick={()=>handlePageChange(page+1)}>
+          <FaRegArrowAltCircleRight />
+        </button>
       </div>
     </div>
   );
